@@ -10,8 +10,8 @@ case class MongoConnPool(
   connOptions: MongoConnectionOptions = MongoConnectionOptions(),
   auth: Seq[Authenticate] = Seq.empty,
   nbChannelsPerNode: Int = 10,
-  name: Option[String]
+  name: Option[String] = None
 ) {
   def driver = MongoDriver(system)
-  def connection = driver.connection(nodes, connOptions, auth, nbChannelsPerNode, None)
+  def connection = driver.connection(nodes, connOptions, auth, nbChannelsPerNode, name)
 }

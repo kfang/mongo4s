@@ -18,4 +18,19 @@ libraryDependencies += "com.github.kfang" %% "mongo4s" % "0.0.1-SNAPSHOT"
 - [x] Count DSL
 - [x] Distinct DSL
 
+#Usage
+##MongoConnPool
+```scala
+val system = ActorSystem()
+val nodes = Seq("localhost")
+val connPool = MongoConnPool(system, nodes)
+```
+##Connecting to a Database
+```scala
+case class SampleModel(_id: String, data: String)
+object SampleModel { implicit val handler = Macros.handler[SampleModel] }
 
+case class MyMongoDB(name: String, conn: MongoConnPool) extends MongoDatabase {
+    val MyColection: MongoCollection = getCollection[SampleModel]("my-collection")
+}
+```
