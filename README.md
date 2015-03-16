@@ -31,6 +31,21 @@ case class SampleModel(_id: String, data: String)
 object SampleModel { implicit val handler = Macros.handler[SampleModel] }
 
 case class MyMongoDB(name: String, conn: MongoConnPool) extends MongoDatabase {
-    val MyColection: MongoCollection = getCollection[SampleModel]("my-collection")
+    val MyCollection: MongoCollection = getCollection[SampleModel]("my-collection")
 }
+```
+
+##Using the DSL
+```scala
+import com.github.kfang.mongo4s.MongoDsl._
+
+//connect to the database using the connection pool
+val Database = MyMongoDB("my-db-name", connPool)
+
+//execute a query on a collection
+Database.MyCollection.execute(
+    count("data" -> "data-value")
+).map(c => {
+    println("There are " + c + " document that match {'data':'data-value'}")
+})
 ```
