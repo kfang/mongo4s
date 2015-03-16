@@ -11,7 +11,9 @@ scalaVersion := "2.11.6"
 crossScalaVersions := Seq("2.10.5", "2.11.6")
 
 libraryDependencies ++= Seq(
-  "org.reactivemongo" %% "reactivemongo" % "0.10.5.0.akka23"
+  "org.reactivemongo" %% "reactivemongo" % "0.10.5.0.akka23",
+  "joda-time" % "joda-time" % "2.3",
+  "org.joda" % "joda-convert" % "1.5"
 )
 
 xerial.sbt.Sonatype.sonatypeSettings
