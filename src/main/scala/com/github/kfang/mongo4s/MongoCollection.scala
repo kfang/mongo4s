@@ -23,6 +23,11 @@ class MongoCollection[M](db: DefaultDB, name: String, failover: FailoverStrategy
     find(query.sel).options(query.opts).cursor[M](query.readPref).enumerate(query.maxDocs, query.stopOnError)
   }
 
+  /** FindOneQuery, return just one **/
+  def execute(query: FindOneQuery): Future[Option[M]] = {
+    find(query.sel).options(query.opts).one[M]
+  }
+
   /** FindListQuery, return a List **/
   def execute(query: FindListQuery): Future[List[M]] = {
     find(query.sel).options(query.opts).cursor[M](query.readPref).collect[List](query.maxDocs, query.stopOnError)

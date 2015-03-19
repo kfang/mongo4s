@@ -17,6 +17,7 @@ case class FindQuery(
   def batchSize(i: Int): FindQuery = this.copy(opts = opts.copy(batchSizeN = i))
   def skip(i: Int): FindQuery = this.copy(opts = opts.copy(skipN = i))
 
+  def one: FindOneQuery = FindOneQuery(sel, readPref, maxDocs, stopOnError, opts)
   def asList: FindListQuery = FindListQuery(sel, readPref, maxDocs, stopOnError, opts)
   def asBulk: FindBulkQuery = FindBulkQuery(sel, readPref, maxDocs, stopOnError, opts)
   def asBulk(bulkSize: Int): FindBulkQuery = FindBulkQuery(sel, readPref, maxDocs, stopOnError, opts.copy(batchSizeN = bulkSize))
@@ -25,6 +26,14 @@ case class FindQuery(
   def project(pr: Producer[(String, BSONValue)]*): FindProjectionQuery =
     FindProjectionQuery(sel, BSONDocument(pr: _*), readPref, maxDocs, stopOnError, opts)
 }
+
+case class FindOneQuery(
+  sel: BSONDocument,
+  readPref: ReadPreference,
+  maxDocs: Int,
+  stopOnError: Boolean,
+  opts: QueryOpts
+)
 
 case class FindListQuery(
   sel: BSONDocument,
