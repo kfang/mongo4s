@@ -12,6 +12,6 @@ case class MongoConnPool(
   nbChannelsPerNode: Int = 10,
   name: Option[String] = None
 ) {
-  def driver = MongoDriver(system)
-  def connection = driver.connection(nodes, connOptions, auth, nbChannelsPerNode, name)
+  val driver = MongoDriver(system)
+  val connection = driver.connection(nodes, connOptions, auth, nbChannelsPerNode, name)
 }
