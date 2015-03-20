@@ -1,7 +1,7 @@
 package com.github.kfang.mongo4s.commands
 
 import reactivemongo.api.{QueryOpts, ReadPreference}
-import reactivemongo.bson.{BSONValue, Producer, BSONDocument}
+import reactivemongo.bson._
 
 case class FindQuery(
   sel: BSONDocument = BSONDocument(),
@@ -95,8 +95,21 @@ case class FindProjectionBulkQuery(
 )
 
 trait FindDsl {
+
   def find(sel: BSONDocument = BSONDocument()): FindQuery = FindQuery(sel = sel)
   def find(sel: Producer[(String, BSONValue)]*): FindQuery = FindQuery(sel = BSONDocument(sel: _*))
+
+  class FindExpectsId {
+    //selection by id
+    def id(s: BSONValue): FindQuery = FindQuery(sel = BSONDocument("_id" -> s))
+    def id(s: String): FindQuery = id(BSONString(s))
+
+    //back references if you're a stickler for consistency
+    def sel(s: BSONDocument): FindQuery = find(s)
+    def sel(s: Producer[(String, BSONValue)]*): FindQuery = find(s: _*)
+  }
+
+  def find: FindExpectsId = new FindExpectsId()
 }
 
 object FindDsl extends FindDsl
