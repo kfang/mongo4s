@@ -27,8 +27,8 @@ collection.execute(find sel "field" -> "value" skip 12 limit 24 asList)
 
 ##Reason 2 => CRUD
 I'm okay with the IFUR(insert/find/update/remove) paradigm but not everyone is familiar with it and I don't think
-it has a wikipedia page.  But a lot people know CRUD(create/read/update/delete).  The dsl provides the verbage to
-interface the two. For example, these two lines are the same:
+it has a wikipedia page.  But a lot people know [CRUD(create/read/update/delete)](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete).
+The dsl provides the verbage to interface the two. For example, these two lines are the same:
 ```scala
 find("field" -> "value")
 read("field" -> "value")
