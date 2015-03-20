@@ -30,7 +30,7 @@ Better documentation will exist once more of this stuff is implemented but the b
 
 #TODO
 - [x] Find DSL
-- [ ] Insert DSL
+- [x] Insert DSL
 - [ ] Delete DSL
 - [ ] Update DSL
 - [x] Count DSL

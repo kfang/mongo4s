@@ -4,12 +4,13 @@ import com.github.kfang.mongo4s.commands._
 import play.api.libs.iteratee.Enumerator
 import reactivemongo.api.{FailoverStrategy, DefaultDB}
 import reactivemongo.api.collections.default.BSONCollection
-import reactivemongo.bson.{BSONDocument, BSONDocumentReader}
-import reactivemongo.core.commands.Count
+import reactivemongo.bson.{BSONDocumentWriter, BSONDocument, BSONDocumentReader}
+import reactivemongo.core.commands.{LastError, Count}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class MongoCollection[M](db: DefaultDB, name: String, failover: FailoverStrategy = FailoverStrategy())(implicit reader: BSONDocumentReader[M])
+class MongoCollection[M](db: DefaultDB, name: String, failover: FailoverStrategy = FailoverStrategy())
+                        (implicit reader: BSONDocumentReader[M], writer: BSONDocumentWriter[M])
   extends BSONCollection(db, name, failover){
 
   implicit val ec: ExecutionContext = db.connection.actorSystem.dispatcher
@@ -51,6 +52,16 @@ class MongoCollection[M](db: DefaultDB, name: String, failover: FailoverStrategy
   /** FindProjectionListQuery, return documents that have been projected in a List **/
   def execute(query: FindProjectionListQuery): Future[List[BSONDocument]] = {
     find(query.sel, query.proj).sort(query.sort).options(query.opts).cursor[BSONDocument](query.readPref).collect[List](query.maxDocs, query.stopOnError)
+  }
+
+  /** InsertQuery **/
+  def execute(query: InsertQuery): Future[LastError] = {
+    insert(query.doc, query.writeConcern)
+  }
+
+  /** InsertModelQuery **/
+  def execute(query: InsertModelQuery[M]): Future[LastError] = {
+    insert[M](query.m, query.writeConcern)
   }
 
 }

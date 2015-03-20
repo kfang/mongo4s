@@ -110,6 +110,11 @@ trait FindDsl {
   }
 
   def find: FindExpectsId = new FindExpectsId()
+
+  //For the CRUD people
+  def read(sel: BSONDocument = BSONDocument()): FindQuery = find(sel)
+  def read(sel: Producer[(String, BSONValue)]*): FindQuery = find(sel: _*)
+  def read: FindExpectsId = new FindExpectsId()
 }
 
 object FindDsl extends FindDsl
