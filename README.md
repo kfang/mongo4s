@@ -45,10 +45,10 @@ Better documentation will exist once more of this stuff is implemented but the b
 #TODO
 - [x] Find DSL
 - [x] Insert DSL
-- [ ] Delete DSL
+- [x] Delete DSL
 - [ ] Update DSL
 - [x] Count DSL
-- [x] Distinct DSL
+- [ ] Distinct DSL
 
 #Usage
 ##MongoConnPool
