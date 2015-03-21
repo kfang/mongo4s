@@ -54,6 +54,8 @@ Better documentation will exist once more of this stuff is implemented but the b
 
 #Usage
 ##MongoConnPool
+The MongoConnPool contains your MongoConnection. For every set of nodes you need to attach to, you have one
+MongoConnection.  This one MongoConnPool is then shared by your MongoDatabases.
 ```scala
 val system = ActorSystem()
 val nodes = Seq("localhost")
@@ -64,7 +66,8 @@ val connPool = MongoConnPool(system, nodes)
 case class SampleModel(_id: String, data: String)
 object SampleModel { implicit val handler = Macros.handler[SampleModel] }
 
-case class MyMongoDB(name: String, conn: MongoConnPool) extends MongoDatabase {
+case class MyMongoDB(conn: MongoConnPool) extends MongoDatabase {
+    val name: String = "db_name"
     val MyCollection: MongoCollection = getCollection[SampleModel]("my-collection")
 }
 ```
