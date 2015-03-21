@@ -64,4 +64,14 @@ class MongoCollection[M](db: DefaultDB, name: String, failover: FailoverStrategy
     insert[M](query.m, query.writeConcern)
   }
 
+  /** RemoveQuery **/
+  def execute(query: RemoveQuery): Future[LastError] = {
+    remove(query.sel, query.writeConcern, query.firstMatchOnly)
+  }
+
+  /** RemoveModelQuery **/
+  def execute(query: RemoveModelQuery[M]): Future[LastError] = {
+    remove(query.m, query.writeConcern, query.firstMatchOnly)
+  }
+
 }
