@@ -51,7 +51,7 @@ Better documentation will exist once more of this stuff is implemented but the b
 - [ ] Update DSL
 - [x] Count DSL
 - [ ] Distinct DSL
-- [ ] '$' shortcuts
+- [ ] '$' shortcuts (err.. 1/4? complete, only the field update ops done)
 
 #Usage
 ##MongoConnPool
@@ -103,4 +103,23 @@ Database.MyCollection.execute(remove.sel("_id" -> model.id))
 
 //TODO: update a document
 //TODO: distinct values
+```
+
+##Shorcuts!!
+I find the whole BSONDocument("field" -> BSONDocument("field" -> BSONDocument("field" -> "value"))) thing a little
+long to type out.  So... here you go!
+```scala
+import com.github.kfang.mongo4s.MongoShortcuts._
+//you could do this...
+BSONDocument("field" -> BSONDocument("field" -> BSONDocument("field" -> "value")))
+//or this!
+Bdoc("field" -> BDoc("field" -> BDoc("field" -> "value")))
+
+//$inc
+BSONDocument("$inc" -> BSONDocument("field" -> 1))
+Bdoc($inc("field" -> 1))
+
+//$currentDate
+BSONDocument("$currentDate" -> BSONDocument("field" -> BSONDocument("$type" -> "date")))
+Bdoc($currentDate("field"))
 ```
