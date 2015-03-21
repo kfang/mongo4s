@@ -3,7 +3,8 @@ package com.github.kfang.mongo4s
 import com.github.kfang.mongo4s.commands.{RemoveDsl, InsertDsl, FindDsl, CountDsl}
 
 trait MongoDsl
-  extends CountDsl
+  extends MongoShortcuts
+  with CountDsl
   with InsertDsl
   with FindDsl
   with RemoveDsl

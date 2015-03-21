@@ -51,6 +51,7 @@ Better documentation will exist once more of this stuff is implemented but the b
 - [ ] Update DSL
 - [x] Count DSL
 - [ ] Distinct DSL
+- [ ] '$' shortcuts
 
 #Usage
 ##MongoConnPool
