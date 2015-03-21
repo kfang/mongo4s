@@ -1,11 +1,13 @@
 #Mongo4s
-A dsl to interact with MongoDB in scala using the [ReactiveMongo](http://reactivemongo.org) library.
+A dsl to interact with [MongoDB](http://www.mongodb.org/) in scala using the [ReactiveMongo](http://reactivemongo.org) library.
 This project is still in development but any requests are welcome. Feel free to file a bugs/enhancements
 into [issues](https://github.com/kfang/mongo4s/issues).
 
 #Building/Sonatype
 This project is still in active development and doesn't have a stable version (yet). But its up on sonatype!
-Its +published against scala version 2.11.6 and 2.10.5 so it should work with both.
+Its cross-published against scala version 2.11.6 and 2.10.5 so it should work with both. The snapshot is not
+always up to date with whats in the repository. I'm sort of ["dogfooding"](http://en.wikipedia.org/wiki/Eating_your_own_dog_food)
+this.
 ```scala
 libraryDependencies += "com.github.kfang" %% "mongo4s" % "0.0.1-SNAPSHOT"
 ```
@@ -75,9 +77,26 @@ import com.github.kfang.mongo4s.MongoDsl._
 val Database = MyMongoDB("my-db-name", connPool)
 
 //execute a query on a collection
-Database.MyCollection.execute(
-    count("data" -> "data-value")
-).map(c => {
-    println("There are " + c + " document that match {'data':'data-value'}")
+Database.MyCollection.execute(count("data" -> "data-value")).map(c => {
+  println("There are " + c + " document that match {'data':'data-value'}")
 })
+
+//find/read out documents
+val getOne: Future[Option[SampleModel]] = Database.MyCollection.execute(find.id("id-to-find").one)
+val getOne: Future[Option[SampleModel]] = Database.MyCollection.execute(find.sel("_id" -> "id-to-find").one)
+val getList: Future[List[SampleModel]] = Database.MyCollection.execute(find.sel().limit(20).asList)
+
+//insert/create a document
+val model = SampleModel("some-id", "my-data")
+Database.MyCollection.execute(insert.model(model))
+Database.MyCollection.execute(insert.doc(BSONDocument("_id" -> "some-id", "data" -> "my-data")))
+
+//remove/delete a document
+val model = SampleModel("some-id", "my-data")
+Database.MyCollection.execute(remove.model(model))
+Database.MyCollection.execute(remove.id(model.id))
+Database.MyCollection.execute(remove.sel("_id" -> model.id))
+
+//TODO: update a document
+//TODO: distinct values
 ```
