@@ -101,8 +101,8 @@ trait FindDsl {
 
   class FindExpectsId {
     //selection by id
-    def id(s: BSONValue): FindQuery = FindQuery(sel = BSONDocument("_id" -> s))
-    def id(s: String): FindQuery = id(BSONString(s))
+    def id(s: BSONValue): FindOneQuery = FindQuery(sel = BSONDocument("_id" -> s)).one
+    def id(s: String): FindOneQuery = id(BSONString(s))
 
     //back references if you're a stickler for consistency
     def sel(s: BSONDocument): FindQuery = find(s)
