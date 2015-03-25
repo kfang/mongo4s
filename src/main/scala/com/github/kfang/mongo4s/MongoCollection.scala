@@ -4,7 +4,7 @@ import com.github.kfang.mongo4s.commands._
 import play.api.libs.iteratee.Enumerator
 import reactivemongo.api.{FailoverStrategy, DefaultDB}
 import reactivemongo.api.collections.default.BSONCollection
-import reactivemongo.bson.{BSONDocumentWriter, BSONDocument, BSONDocumentReader}
+import reactivemongo.bson.{BSONArray, BSONDocumentWriter, BSONDocument, BSONDocumentReader}
 import reactivemongo.core.commands.{LastError, Count}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -17,6 +17,10 @@ class MongoCollection[M](db: DefaultDB, name: String, failover: FailoverStrategy
 
   def execute(query: CountQuery): Future[Int] = {
     db.command(Count(name, Some(query.selector)), query.readPref)
+  }
+
+  def execute(query: DistinctQuery): Future[BSONArray] = {
+    db.command(Distinct(name, query.field, query.sel), query.readPref)
   }
 
   /** Default FindQuery **/
